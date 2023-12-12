@@ -1,56 +1,54 @@
 import React from 'react';
-import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
-import {
-  StyleSheet,
-  StatusBar,
-  SafeAreaView,
-  FlatList,
-  Text,
-  TextInput,
-  View,
-  ScrollView,
-} from 'react-native';
-import {
-  Ionicons,
-  FontAwesome,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { WeatherDetails } from '../components/WeatherDetails';
+import styled from 'styled-components/native';
+import { StatusBar, SafeAreaView } from 'react-native';
 import { WeatherInfoCard } from '../../../Cards';
-
 import SearchBar from '../../../SearchBar';
 
-const WeatherScreen = () => {
+interface IWeatherScreen {
+  data: {
+    currentLocationCityName: string;
+    currentLocationStateName: string;
+    currentLocationCountryName: string;
+    currentTemperature: number;
+    feelsLike: number;
+    weatherIcon: string;
+    lowTemp: number;
+    highTemp: number;
+    humidity: number;
+    windSpeed: number;
+    visibility: number;
+    dewPoint: number;
+    pressure: number;
+    sunrise: string;
+    sunset: string;
+  };
+}
+
+const SafeArea = styled(SafeAreaView)`
+  flex: 1;
+  ${StatusBar.currentHeight && `margin-top: ${StatusBar.currentHeight}px`};
+`;
+
+const SearchContainer = styled.View`
+  padding: ${(props) => props.theme.space.small};
+`;
+
+const ListContainer = styled.View`
+  padding: ${(props) => props.theme.space.small};
+  flex: 1;
+`;
+
+const WeatherScreen = ({ data }: IWeatherScreen) => {
   return (
-    <>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.search}>
-          <SearchBar />
-        </View>
-        <View style={styles.list}>
-          <WeatherInfoCard />
-        </View>
-      </SafeAreaView>
-      <ExpoStatusBar style="auto" />
-    </>
+    <SafeArea>
+      <SearchContainer>
+        <SearchBar />
+      </SearchContainer>
+      <ListContainer>
+        <WeatherInfoCard {...data} />
+      </ListContainer>
+    </SafeArea>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight,
-  },
-  search: {
-    padding: 16,
-  },
-  list: {
-    flex: 1,
-    padding: 16,
-    // backgroundColor: '#eceef5',
-    // backgroundColor: '##E5EBF5',
-  },
-});
 
 export default WeatherScreen;
